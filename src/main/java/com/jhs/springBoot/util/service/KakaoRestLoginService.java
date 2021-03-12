@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.jhs.springBoot.util.Util;
-import com.jhs.springBoot.util.dto.api.KakaoUser;
+import com.jhs.springBoot.util.dto.api.KapiKakaoCom__v2_user_me__ResponseBody;
+import com.jhs.springBoot.util.dto.api.KauthKakaoCom__oauth_token__ResponseBody;
 
 @Service
 public class KakaoRestLoginService {
@@ -36,28 +37,32 @@ public class KakaoRestLoginService {
 		return sb.toString();
 	}
 
-	public KakaoUser getKakaoUserByAuthorizeCode(String authorizeCode) {
+	public KapiKakaoCom__v2_user_me__ResponseBody getKakaoUserByAuthorizeCode(String authorizeCode) {
 		RestTemplate restTemplate = restTemplateBuilder.build();
 
-		Map<String, Object> respoonseBodyRs = Util
-				.getHttpPostResponseBody(new ParameterizedTypeReference<Map<String, Object>>() {
-				}, restTemplate, "https://kauth.kakao.com/oauth/token", "grant_type", "authorization_code", "client_id",
-						kakaoRestApiKey, "redirect_uri", kakaoRestRedirectUrl, "code", authorizeCode);
+		Map<String, String> params = Util.getNewMapStringString();
+		params.put("grant_type", "authorization_code");
+		params.put("client_id", kakaoRestApiKey);
+		params.put("redirect_uri", kakaoRestRedirectUrl);
+		params.put("code", authorizeCode);
 
-		String accessToken = (String) respoonseBodyRs.get("access_token");
+		KauthKakaoCom__oauth_token__ResponseBody respoonseBodyRs = Util
+				.getHttpPostResponseBody(new ParameterizedTypeReference<KauthKakaoCom__oauth_token__ResponseBody>() {
+				}, restTemplate, "https://kauth.kakao.com/oauth/token", params, null);
 
-		return getKakaoUserByAccessToken(accessToken);
+		return getKakaoUserByAccessToken(respoonseBodyRs.access_token);
 	}
 
-	public KakaoUser getKakaoUserByAccessToken(String accessToken) {
+	public KapiKakaoCom__v2_user_me__ResponseBody getKakaoUserByAccessToken(String accessToken) {
 		RestTemplate restTemplate = restTemplateBuilder.build();
 
 		Map<String, String> headerParams = new HashMap<>();
 		headerParams.put("Authorization", "Bearer " + accessToken);
 
-		KakaoUser kakaoUser = Util.getHttpPostResponseBody(new ParameterizedTypeReference<KakaoUser>() {
-		}, restTemplate, "https://kapi.kakao.com/v2/user/me", headerParams);
+		KapiKakaoCom__v2_user_me__ResponseBody respoonseBody = Util
+				.getHttpPostResponseBody(new ParameterizedTypeReference<KapiKakaoCom__v2_user_me__ResponseBody>() {
+				}, restTemplate, "https://kapi.kakao.com/v2/user/me", null, headerParams);
 
-		return kakaoUser;
+		return respoonseBody;
 	}
 }

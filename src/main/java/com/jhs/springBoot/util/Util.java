@@ -311,32 +311,32 @@ public class Util {
 		return Pattern.matches("^[a-zA-Z]{1}[a-zA-Z0-9_]{4,19}$", str);
 	}
 
-	public static <T> T getHttpPostResponseBody(ParameterizedTypeReference<T> responseType, RestTemplate restTemplate, String url, String... params) {
-		return getHttpPostResponseBody(responseType, restTemplate, url, null, params);
-	}
-
 	public static <T> T getHttpPostResponseBody(ParameterizedTypeReference<T> responseType, RestTemplate restTemplate,
-			String url, Map<String, String> headerParam, String... params) {
+			String url, Map<String, String> params, Map<String, String> headerParams) {
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-		if (headerParam != null) {
-			for (String key : headerParam.keySet()) {
-				String headerValue = headerParam.get(key);
+		if (headerParams != null) {
+			for (String key : headerParams.keySet()) {
+				String headerValue = headerParams.get(key);
 				httpHeaders.add(key, headerValue);
 			}
 		}
 
-		MultiValueMap<String, String> param = Util.hashMapToLinkedMultiValueMap(Util.mapOf(params));
+		MultiValueMap<String, String> newParams = Util.hashMapToLinkedMultiValueMap(params);
 
-		HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(param, httpHeaders);
+		HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(newParams, httpHeaders);
 
 		ResponseEntity<T> responseEntity = restTemplate.exchange(url, HttpMethod.POST, entity, responseType);
 		return responseEntity.getBody();
 	}
 
-	private static MultiValueMap<String, String> hashMapToLinkedMultiValueMap(Map<String, Object> origin) {
+	private static MultiValueMap<String, String> hashMapToLinkedMultiValueMap(Map<String, String> origin) {
+		if (origin == null) {
+			return null;
+		}
+
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 
 		for (String key : origin.keySet()) {
@@ -399,5 +399,9 @@ public class Util {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static Map<String, String> getNewMapStringString() {
+		return new LinkedHashMap<String, String>();
 	}
 }

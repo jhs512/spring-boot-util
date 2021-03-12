@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jhs.springBoot.util.dto.api.KakaoUser;
+import com.jhs.springBoot.util.dto.api.KapiKakaoCom__v2_user_me__ResponseBody;
 import com.jhs.springBoot.util.service.KakaoRestLoginService;
 
 @Controller
@@ -32,9 +32,9 @@ public class UsrMemberController {
 
 	@GetMapping("/usr/member/doLoginByKakoRest")
 	@ResponseBody
-	public KakaoUser doLoginByKakoRest(String code) {
+	public KapiKakaoCom__v2_user_me__ResponseBody doLoginByKakoRest(String code) {
 
-		KakaoUser kakaoUser = kakaoRestLoginService.getKakaoUserByAuthorizeCode(code);
+		KapiKakaoCom__v2_user_me__ResponseBody kakaoUser = kakaoRestLoginService.getKakaoUserByAuthorizeCode(code);
 
 		return kakaoUser;
 	}
