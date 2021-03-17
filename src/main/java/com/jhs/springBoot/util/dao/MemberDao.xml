@@ -26,7 +26,7 @@
 		</set>
 		WHERE id = #{id}
 	</update>
-	
+
 	<insert id="join" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO `member`
 		SET regDate = NOW(),
@@ -45,4 +45,23 @@
 		</if>
 		authKey = CONCAT("authKey1__", UUID(), "__", RAND())
 	</insert>
+
+	<select id="getMember" resultType="Member">
+		SELECT *
+		FROM `member`
+		WHERE id
+		= #{id}
+	</select>
+
+	<select id="getMemberByLoginId" resultType="Member">
+		SELECT *
+		FROM `member`
+		WHERE loginId = #{loginId}
+	</select>
+
+	<select id="getMemberByAuthKey" resultType="Member">
+		SELECT *
+		FROM `member`
+		WHERE authKey = #{authKey}
+	</select>
 </mapper>

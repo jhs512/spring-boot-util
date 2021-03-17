@@ -44,20 +44,31 @@ public class UsrMemberController {
 		KapiKakaoCom__v2_user_me__ResponseBody kakaoUser = kakaoRestLoginService.getKakaoUserByAuthorizeCode(code);
 
 		Member member = memberService.getMemberByOnLoginProviderMemberId("kakaoRest", kakaoUser.id);
-		
+
 		ResultData rd = null;
 
 		if (member != null) {
 			rd = memberService.updateMember(member, kakaoUser);
-		}
-		else {
+		} else {
 			rd = memberService.join(kakaoUser);
 		}
-		
-		int id = (int)rd.getBody().get("id");
-		
+
+		int id = (int) rd.getBody().get("id");
+
 		session.setAttribute("loginedMemberId", id);
-		
+
 		return new ResultData("S-1", "로그인 되었습니다.", "id", id);
+	}
+
+	@GetMapping("/usr/member/doLogout")
+	@ResponseBody
+	public ResultData doLogout(HttpSession session) {
+		int id = -1;
+		if (session.getAttribute("loginedMemberId") != null) {
+			id = (int) session.getAttribute("loginedMemberId");
+			session.removeAttribute("loginedMemberId");
+		}
+
+		return new ResultData("S-1", "로그아웃 되었습니다.", "id", id);
 	}
 }

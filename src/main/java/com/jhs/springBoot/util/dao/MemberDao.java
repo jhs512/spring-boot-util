@@ -15,4 +15,10 @@ public interface MemberDao {
 	void modify(Map<String, Object> param);
 
 	void join(Map<String, Object> param);
+
+	Member getMemberByAuthKey(@Param("authKey") String authKey);
+
+	Member getMember(@Param("id") int id);
+	
+	Member getMemberByLoginId(@Param("loginId") String loginId);
 }

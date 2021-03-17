@@ -30,7 +30,7 @@ public class MemberService {
 		}
 
 		memberDao.modify(param);
-		
+
 		return new ResultData("S-1", "회원정보가 수정되었습니다.", "id", member.getId());
 	}
 
@@ -45,15 +45,27 @@ public class MemberService {
 
 		param.put("loginId", loginId);
 		param.put("loginPw", Util.getUUIDStr());
-		
+
 		param.put("nickname", kakaoUser.kakao_account.profile.nickname);
 		param.put("name", kakaoUser.kakao_account.profile.nickname);
 		param.put("email", kakaoUser.kakao_account.email);
 
 		memberDao.join(param);
-		
+
 		int id = Util.getAsInt(param.get("id"), 0);
-		
+
 		return new ResultData("S-1", "가입에 성공하였습니다.", "id", id);
+	}
+
+	public Member getMemberByAuthKey(String authKey) {
+		return memberDao.getMemberByAuthKey(authKey);
+	}
+
+	public Member getMember(int id) {
+		return memberDao.getMember(id);
+	}
+
+	public boolean isAdmin(Member actor) {
+		return actor.getAuthLevel() == 7;
 	}
 }
