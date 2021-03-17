@@ -70,8 +70,6 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 		if (isAjaxParameter == null) {
 			if (controllerActName.startsWith("get")) {
 				isAjax = true;
-			} else if (controllerTypeCode.equals("usr")) {
-				isAjax = true;
 			}
 		} else if (isAjaxParameter.equals("Y")) {
 			isAjax = true;
