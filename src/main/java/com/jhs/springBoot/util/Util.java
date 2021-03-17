@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -403,5 +404,9 @@ public class Util {
 
 	public static Map<String, String> getNewMapStringString() {
 		return new LinkedHashMap<String, String>();
+	}
+
+	public static String getUUIDStr() {
+		return UUID.randomUUID().toString();
 	}
 }
