@@ -18,6 +18,9 @@ spring:
 mybatis:
   type-aliases-package: com.jhs.springBoot.util.dto
 custom:
+  aligo:
+    userId: jangka512
+    apiKey: 5afwc2p50bnrhhss4k8tqnls3v7toz8d
   kakaoRest:
     apiKey: 39e3f2abe5c8568bd7bd31303efd8a43
     redirectUrl: http://localhost:8020/usr/member/doLoginByKakoRest
