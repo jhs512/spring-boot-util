@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.jhs.springBoot.util.Util;
 import com.jhs.springBoot.util.dto.Member;
 import com.jhs.springBoot.util.service.MemberService;
+import com.jhs.springBoot.util.util.Util;
 
 import lombok.extern.slf4j.Slf4j;
 

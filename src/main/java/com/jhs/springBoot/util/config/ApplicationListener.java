@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import com.jhs.springBoot.util.Util;
+import com.jhs.springBoot.util.util.Util;
 
 @Component
 @Order(0)

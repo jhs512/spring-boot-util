@@ -5,11 +5,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jhs.springBoot.util.Util;
 import com.jhs.springBoot.util.dao.MemberDao;
 import com.jhs.springBoot.util.dto.Member;
 import com.jhs.springBoot.util.dto.ResultData;
 import com.jhs.springBoot.util.dto.api.KapiKakaoCom__v2_user_me__ResponseBody;
+import com.jhs.springBoot.util.util.Util;
 
 @Service
 public class MemberService {

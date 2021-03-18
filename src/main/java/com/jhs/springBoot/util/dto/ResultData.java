@@ -2,7 +2,7 @@ package com.jhs.springBoot.util.dto;
 
 import java.util.Map;
 
-import com.jhs.springBoot.util.Util;
+import com.jhs.springBoot.util.util.Util;
 
 import lombok.Data;
 

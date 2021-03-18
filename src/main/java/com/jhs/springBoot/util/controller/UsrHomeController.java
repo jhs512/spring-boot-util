@@ -4,9 +4,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jhs.springBoot.util.Util;
 import com.jhs.springBoot.util.dto.ResultData;
 import com.jhs.springBoot.util.dto.api.Aligo__send__ResponseBody;
+import com.jhs.springBoot.util.util.Util;
 
 @Controller
 public class UsrHomeController extends BaseController {
