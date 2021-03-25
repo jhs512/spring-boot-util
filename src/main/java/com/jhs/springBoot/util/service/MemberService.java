@@ -71,7 +71,11 @@ public class MemberService {
 		return actor.getAuthLevel() == 7;
 	}
 
-	public void updateToken(int id, String tokenName, String token) {
-		attrService.setValue("member", id, "extra", tokenName, token, null);
+	public void updateToken(int actorId, String tokenName, String token) {
+		attrService.setValue("member", actorId, "extra", tokenName, token, null);
+	}
+
+	public String getToken(int actorId, String tokenName) {
+		return attrService.getValue("member", actorId, "extra", tokenName);
 	}
 }

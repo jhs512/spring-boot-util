@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jhs.springBoot.util.dto.Member;
 import com.jhs.springBoot.util.dto.ResultData;
 import com.jhs.springBoot.util.dto.api.KapiKakaoCom__v2_user_me__ResponseBody;
-import com.jhs.springBoot.util.service.KakaoRestLoginService;
+import com.jhs.springBoot.util.service.KakaoRestService;
 import com.jhs.springBoot.util.service.MemberService;
 
 @Controller
@@ -23,7 +25,7 @@ public class UsrMemberController extends BaseController {
 	private MemberService memberService;
 
 	@Autowired
-	private KakaoRestLoginService kakaoRestLoginService;
+	private KakaoRestService kakaoRestService;
 
 	@GetMapping("/usr/member/login")
 	public String showLogin() {
@@ -33,15 +35,24 @@ public class UsrMemberController extends BaseController {
 	@GetMapping("/usr/member/goKakaoLoginPage")
 	public String goKakaoLoginPage() {
 
-		String url = kakaoRestLoginService.getKakaoLoginPageUrl();
+		String url = kakaoRestService.getKakaoLoginPageUrl();
 
 		return "redirect:" + url;
 	}
 
+	@RequestMapping("/usr/member/doSendSelfKakaoMessage")
+	@ResponseBody
+	public ResultData doSendKakaoMessage(HttpServletRequest req, String msg, String linkBtnName, String webUrl,
+			String mobileUrl) {
+		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+
+		return kakaoRestService.doSendSelfKakaoMessage(loginedMemberId, msg, linkBtnName, webUrl, mobileUrl);
+	}
+
 	@GetMapping("/usr/member/doLoginByKakoRest")
 	public String doLoginByKakoRest(HttpServletRequest req, HttpSession session, String code) {
-		KapiKakaoCom__v2_user_me__ResponseBody kakaoUser = kakaoRestLoginService.getKakaoUserByAuthorizeCode(code);
-		
+		KapiKakaoCom__v2_user_me__ResponseBody kakaoUser = kakaoRestService.getKakaoUserByAuthorizeCode(code);
+
 		Member member = memberService.getMemberByOnLoginProviderMemberId("kakaoRest", kakaoUser.id);
 
 		ResultData rd = null;
@@ -51,12 +62,12 @@ public class UsrMemberController extends BaseController {
 		} else {
 			rd = memberService.join(kakaoUser);
 		}
-		
+
 		String accessToken = kakaoUser.kauthKakaoCom__oauth_token__ResponseBody.access_token;
 		String refreshToken = kakaoUser.kauthKakaoCom__oauth_token__ResponseBody.refresh_token;
-		
+
 		int id = (int) rd.getBody().get("id");
-		
+
 		memberService.updateToken(id, "kauthKakaoCom__oauth_token__access_token", accessToken);
 		memberService.updateToken(id, "kauthKakaoCom__oauth_token__refresh_token", refreshToken);
 

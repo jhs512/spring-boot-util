@@ -11,6 +11,7 @@ import java.security.MessageDigest;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -46,10 +47,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jhs.springBoot.util.dto.api.Aligo__send__ResponseBody;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Util {
 	private static String aligoUserId;
 	private static String aligoApiKey;
-	
+
 	public static Aligo__send__ResponseBody sendSms(String from, String to, String msg) {
 		return sendSms(from, to, msg, false);
 	}
@@ -507,6 +511,16 @@ public class Util {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static String getJsonStringFromObject(Object o) {
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		try {
+			return objectMapper.writeValueAsString(o);
+		} catch (JsonProcessingException e) {
+			return null;
+		}
 	}
 
 	public static Map<String, String> getNewMapStringString() {
