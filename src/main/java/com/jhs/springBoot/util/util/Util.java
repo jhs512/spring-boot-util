@@ -11,7 +11,6 @@ import java.security.MessageDigest;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -534,5 +533,11 @@ public class Util {
 	public static void initAligo(String aligoUserId, String aligoApiKey) {
 		Util.aligoUserId = aligoUserId;
 		Util.aligoApiKey = aligoApiKey;
+	}
+
+	public static Map getMapFromObject(Object o) {
+		// ObjectMapper
+		ObjectMapper objectMapper = new ObjectMapper();
+		return objectMapper.convertValue(o, Map.class);
 	}
 }
