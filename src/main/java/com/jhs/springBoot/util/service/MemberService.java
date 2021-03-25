@@ -17,6 +17,11 @@ public class MemberService {
 	private MemberDao memberDao;
 	@Autowired
 	private AttrService attrService;
+	
+	public enum AttrKey__Type2Code {
+		kauthKakaoCom__oauth_token__access_token,
+		kauthKakaoCom__oauth_token__refresh_token
+	}
 
 	public Member getMemberByOnLoginProviderMemberId(String loginProviderTypeCode, int onLoginProviderMemberId) {
 		return memberDao.getMemberByOnLoginProviderMemberId(loginProviderTypeCode, onLoginProviderMemberId);
@@ -71,11 +76,11 @@ public class MemberService {
 		return actor.getAuthLevel() == 7;
 	}
 
-	public void updateToken(int actorId, String tokenName, String token) {
-		attrService.setValue("member", actorId, "extra", tokenName, token, null);
+	public void updateToken(int actorId, MemberService.AttrKey__Type2Code tokenName, String token) {
+		attrService.setValue("member", actorId, "extra", tokenName.toString(), token, null);
 	}
 
-	public String getToken(int actorId, String tokenName) {
-		return attrService.getValue("member", actorId, "extra", tokenName);
+	public String getToken(int actorId, MemberService.AttrKey__Type2Code tokenName) {
+		return attrService.getValue("member", actorId, "extra", tokenName.toString());
 	}
 }

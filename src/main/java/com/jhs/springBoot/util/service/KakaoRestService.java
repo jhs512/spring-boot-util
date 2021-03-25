@@ -79,7 +79,8 @@ public class KakaoRestService {
 	// 나에게 메시지 보내기
 	public ResultData doSendSelfKakaoMessage(int actorId, String msg, String linkBtnName, String webLink,
 			String mobileLink) {
-		String accessToken = memberService.getToken(actorId, "kauthKakaoCom__oauth_token__access_token");
+		String accessToken = memberService.getToken(actorId,
+				MemberService.AttrKey__Type2Code.kauthKakaoCom__oauth_token__access_token);
 
 		// 마찬가지로 access_Token값을 가져와 access_Token값을 통해 로그인되어있는 사용자를 확인합니다.
 		String reqURL = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
@@ -112,7 +113,8 @@ public class KakaoRestService {
 						new ParameterizedTypeReference<KapiKakaoCom__v2_api_talk_memo_default_send__ResponseBody>() {
 						}, restTemplate, reqURL, params, headerParams);
 
-		return new ResultData("S-1", "성공하였습니다.", "kapiKakaoCom__v2_api_talk_memo_default_send__ResponseBody", kapiKakaoCom__v2_api_talk_memo_default_send__ResponseBody);
+		return new ResultData("S-1", "성공하였습니다.", "kapiKakaoCom__v2_api_talk_memo_default_send__ResponseBody",
+				kapiKakaoCom__v2_api_talk_memo_default_send__ResponseBody);
 	}
 
 }

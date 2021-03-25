@@ -68,8 +68,8 @@ public class UsrMemberController extends BaseController {
 
 		int id = (int) rd.getBody().get("id");
 
-		memberService.updateToken(id, "kauthKakaoCom__oauth_token__access_token", accessToken);
-		memberService.updateToken(id, "kauthKakaoCom__oauth_token__refresh_token", refreshToken);
+		memberService.updateToken(id, MemberService.AttrKey__Type2Code.kauthKakaoCom__oauth_token__access_token, accessToken);
+		memberService.updateToken(id, MemberService.AttrKey__Type2Code.kauthKakaoCom__oauth_token__refresh_token, refreshToken);
 
 		session.setAttribute("loginedMemberId", id);
 
