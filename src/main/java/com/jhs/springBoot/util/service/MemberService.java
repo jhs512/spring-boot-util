@@ -15,6 +15,8 @@ import com.jhs.springBoot.util.util.Util;
 public class MemberService {
 	@Autowired
 	private MemberDao memberDao;
+	@Autowired
+	private AttrService attrService;
 
 	public Member getMemberByOnLoginProviderMemberId(String loginProviderTypeCode, int onLoginProviderMemberId) {
 		return memberDao.getMemberByOnLoginProviderMemberId(loginProviderTypeCode, onLoginProviderMemberId);
@@ -67,5 +69,9 @@ public class MemberService {
 
 	public boolean isAdmin(Member actor) {
 		return actor.getAuthLevel() == 7;
+	}
+
+	public void updateToken(int id, String tokenName, String token) {
+		attrService.setValue("member", id, "extra", tokenName, token, null);
 	}
 }

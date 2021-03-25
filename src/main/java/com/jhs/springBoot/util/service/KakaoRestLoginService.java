@@ -50,18 +50,20 @@ public class KakaoRestLoginService {
 				.getHttpPostResponseBody(new ParameterizedTypeReference<KauthKakaoCom__oauth_token__ResponseBody>() {
 				}, restTemplate, "https://kauth.kakao.com/oauth/token", params, null);
 
-		return getKakaoUserByAccessToken(respoonseBodyRs.access_token);
+		return getKakaoUserByAccessToken(respoonseBodyRs);
 	}
 
-	public KapiKakaoCom__v2_user_me__ResponseBody getKakaoUserByAccessToken(String accessToken) {
+	public KapiKakaoCom__v2_user_me__ResponseBody getKakaoUserByAccessToken(KauthKakaoCom__oauth_token__ResponseBody kauthKakaoCom__oauth_token__ResponseBody) {
 		RestTemplate restTemplate = restTemplateBuilder.build();
 
 		Map<String, String> headerParams = new HashMap<>();
-		headerParams.put("Authorization", "Bearer " + accessToken);
+		headerParams.put("Authorization", "Bearer " + kauthKakaoCom__oauth_token__ResponseBody.access_token);
 
 		KapiKakaoCom__v2_user_me__ResponseBody respoonseBody = Util
 				.getHttpPostResponseBody(new ParameterizedTypeReference<KapiKakaoCom__v2_user_me__ResponseBody>() {
 				}, restTemplate, "https://kapi.kakao.com/v2/user/me", null, headerParams);
+		
+		respoonseBody.kauthKakaoCom__oauth_token__ResponseBody = kauthKakaoCom__oauth_token__ResponseBody;
 
 		return respoonseBody;
 	}

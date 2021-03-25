@@ -5,6 +5,9 @@ public class KapiKakaoCom__v2_user_me__ResponseBody {
 	public Properties properties;
 	public KakaoAccount kakao_account;
 	
+	// 이 정보는 서버에서 날라오는 정보는 아닙니다.
+	public KauthKakaoCom__oauth_token__ResponseBody kauthKakaoCom__oauth_token__ResponseBody;
+	
 	public static class Properties {
 		public String nickname;
 	}

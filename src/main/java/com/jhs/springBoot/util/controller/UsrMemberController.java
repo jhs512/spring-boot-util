@@ -41,7 +41,7 @@ public class UsrMemberController extends BaseController {
 	@GetMapping("/usr/member/doLoginByKakoRest")
 	public String doLoginByKakoRest(HttpServletRequest req, HttpSession session, String code) {
 		KapiKakaoCom__v2_user_me__ResponseBody kakaoUser = kakaoRestLoginService.getKakaoUserByAuthorizeCode(code);
-
+		
 		Member member = memberService.getMemberByOnLoginProviderMemberId("kakaoRest", kakaoUser.id);
 
 		ResultData rd = null;
@@ -51,8 +51,14 @@ public class UsrMemberController extends BaseController {
 		} else {
 			rd = memberService.join(kakaoUser);
 		}
-
+		
+		String accessToken = kakaoUser.kauthKakaoCom__oauth_token__ResponseBody.access_token;
+		String refreshToken = kakaoUser.kauthKakaoCom__oauth_token__ResponseBody.refresh_token;
+		
 		int id = (int) rd.getBody().get("id");
+		
+		memberService.updateToken(id, "kauthKakaoCom__oauth_token__access_token", accessToken);
+		memberService.updateToken(id, "kauthKakaoCom__oauth_token__refresh_token", refreshToken);
 
 		session.setAttribute("loginedMemberId", id);
 
