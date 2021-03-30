@@ -9,6 +9,7 @@ import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -257,6 +258,10 @@ public class Util {
 
 	public static <T> T reqAttr(HttpServletRequest req, String attrName, T defaultValue) {
 		return (T) ifNull(req.getAttribute(attrName), defaultValue);
+	}
+	
+	public static boolean isExists(Object data) {
+		return !isEmpty(data);
 	}
 
 	public static boolean isEmpty(Object data) {
@@ -539,5 +544,25 @@ public class Util {
 		// ObjectMapper
 		ObjectMapper objectMapper = new ObjectMapper();
 		return objectMapper.convertValue(o, Map.class);
+	}
+
+	// 초단위인 토큰 유효기간을 날짜단위로 환산하는 유틸
+	public static String getDateStrAfterSeconds(long seconds) {
+		// 현재 시간 초단위로 가져오기
+		long currentTimeMillis = System.currentTimeMillis();
+		// 현재 시간에 만료기간 더하기
+		seconds = currentTimeMillis + (seconds * 1000);
+
+		// 다시 날짜 단위로 환산
+		SimpleDateFormat simpl = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return simpl.format(seconds);
+	}
+
+	public static Date getDateFromStr(String dateStr) {
+		try {
+			return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateStr);
+		} catch (ParseException e) {
+			return null;
+		}
 	}
 }

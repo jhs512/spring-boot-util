@@ -32,9 +32,6 @@ public class KakaoRestService {
 	@Value("${custom.kakaoRest.redirectUrl}")
 	private String kakaoRestRedirectUrl;
 
-	public void getAccessToken(String kakaoAppKeyRestApi) {
-	}
-
 	public String getKakaoLoginPageUrl() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("https://kauth.kakao.com/oauth/authorize");
@@ -80,8 +77,7 @@ public class KakaoRestService {
 	// 나에게 메시지 보내기
 	public ResultData doSendSelfKakaoMessage(int actorId, String msg, String linkBtnName, String webLink,
 			String mobileLink) {
-		String accessToken = memberService.getToken(actorId,
-				MemberService.AttrKey__Type2Code.kauthKakaoCom__oauth_token__access_token);
+		String accessToken = memberService.getToken___kauthKakaoCom__oauth_token__access_token(actorId);
 
 		// 마찬가지로 access_Token값을 가져와 access_Token값을 통해 로그인되어있는 사용자를 확인합니다.
 		String reqURL = KapiKakaoCom__v2_api_talk_memo_default_send__RequestBody__object_type_text.API_URL;
@@ -100,6 +96,22 @@ public class KakaoRestService {
 
 		return new ResultData("S-1", "성공하였습니다.", "kapiKakaoCom__v2_api_talk_memo_default_send__ResponseBody",
 				kapiKakaoCom__v2_api_talk_memo_default_send__ResponseBody);
+	}
+
+	public KauthKakaoCom__oauth_token__ResponseBody refreshToken___kauthKakaoCom__oauth_token__access_token(
+			String refreshToken) {
+		RestTemplate restTemplate = restTemplateBuilder.build();
+
+		Map<String, String> params = Util.getNewMapStringString();
+		params.put("grant_type", "refresh_token");
+		params.put("client_id", kakaoRestApiKey);
+		params.put("refresh_token", refreshToken);
+
+		KauthKakaoCom__oauth_token__ResponseBody respoonseBodyRs = Util
+				.getHttpPostResponseBody(new ParameterizedTypeReference<KauthKakaoCom__oauth_token__ResponseBody>() {
+				}, restTemplate, "https://kauth.kakao.com/oauth/token", params, null);
+
+		return respoonseBodyRs;
 	}
 
 }

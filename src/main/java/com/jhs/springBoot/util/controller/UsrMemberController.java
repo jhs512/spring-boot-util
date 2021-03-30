@@ -15,6 +15,7 @@ import com.jhs.springBoot.util.dto.ResultData;
 import com.jhs.springBoot.util.dto.api.KapiKakaoCom__v2_user_me__ResponseBody;
 import com.jhs.springBoot.util.service.KakaoRestService;
 import com.jhs.springBoot.util.service.MemberService;
+import com.jhs.springBoot.util.util.Util;
 
 @Controller
 public class UsrMemberController extends BaseController {
@@ -67,9 +68,8 @@ public class UsrMemberController extends BaseController {
 		String refreshToken = kakaoUser.kauthKakaoCom__oauth_token__ResponseBody.refresh_token;
 
 		int id = (int) rd.getBody().get("id");
-
-		memberService.updateToken(id, MemberService.AttrKey__Type2Code.kauthKakaoCom__oauth_token__access_token, accessToken);
-		memberService.updateToken(id, MemberService.AttrKey__Type2Code.kauthKakaoCom__oauth_token__refresh_token, refreshToken);
+		
+		memberService.updateKakaoRestAccessToken(id, kakaoUser.kauthKakaoCom__oauth_token__ResponseBody);
 
 		session.setAttribute("loginedMemberId", id);
 
